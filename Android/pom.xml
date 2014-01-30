@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  *  Android SuperPom by Sheldon Irwin.
+  *  
+  *  This POM is intended for use as a super or parent POM to
+  *  subprojects and / or applications.
+  *  
+  *  Installation / use:
+  *    Ensure ANDROID_HOME has been set.
+  *    Add $ANDROID_HOMD/tools and $ANDROID_HOME/platform-tools
+  *    to the $PATH env. variable.
+  *    Ubuntu requires 32bit libs to execute aapt.
+  *    
+-->
+<project
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>me.sheldonirwin.android.samples</groupId>
+	<artifactId>parent-pom</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Android Sample Application POM by Sheldon Irwin</name>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.version>3.1.1</maven.version>
+		<android.api.version>4.1.1.4</android.api.version>
+		<android.platform.version>19</android.platform.version>
+		<android.maven.plugin.version>3.8.2</android.maven.plugin.version>
+		<org.junit.version>4.10</org.junit.version>
+	</properties>
+	
+	<modules>
+		<module>quickstart</module>
+	</modules>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${org.junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>android</artifactId>
+				<version>${android.api.version}</version>
+				<!-- <version>4.4</version> -->
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Jar Signer Plugin: for final release -->
+				<plugin>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<version>1.2</version>
+				</plugin>
+				<!-- Maven Resources Plugin: -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+					<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<!-- Android Plugin -->
+				<plugin>
+					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<artifactId>android-maven-plugin</artifactId>
+					<version>${android.maven.plugin.version}</version>
+					<extensions>true</extensions>
+					<configuration>
+						<mergeManifests>true</mergeManifests>
+						<manifest>
+							<debuggable>true</debuggable>
+						</manifest>
+						<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+						<resourceDirectory>${project.basedir}/res</resourceDirectory>
+						<sdk>
+							<platform>16</platform>
+						</sdk>
+						<!--
+						<emulator>
+							<avd>2g</avd>
+							<wait>10000</wait>
+							<!- - <options>-no-skin</options> - - >
+						</emulator>
+						<zipalign>
+							<verbose>true</verbose>
+						</zipalign>
+						-->
+						<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
